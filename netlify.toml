@@ -1,0 +1,8 @@
+[build]
+  command = "yarn && yarn build"
+  publish = "gnt2-migration-ui/dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200

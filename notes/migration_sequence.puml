@@ -1,0 +1,69 @@
+@startuml
+hide footbox
+
+actor Owner
+actor "User (Alice)" as Alice
+
+participant "GolemNetworkToken (current)" as GNT
+participant GNTMigrationAgent as MA
+participant NewGolemNetworkToken as NGNT
+participant OtherGolemNetworkToken as NGNT2
+
+group Basic flow
+
+Alice -> GNT: **migrate**(100)
+activate GNT
+
+GNT -> MA: **migrateFrom**(Alice, 100)
+
+activate MA
+
+MA -> NGNT: **mint**(Alice, 100)
+
+return
+
+GNT -> GNT: **Event**: Migrate(Alice, GNTMigrationAgent, 100)
+return
+
+end
+|||
+|||
+group New target
+
+Owner -> MA: **setTarget**(0)
+Alice -> GNT: **migrate**(100)
+activate GNT
+
+GNT -> MA: **migrateFrom**(Alice, 100)
+
+activate MA #red
+note right: Setting target to 0\neffectively blocks the migration
+return #red <font color="red><b>revert</b></font>
+return #red <font color="red><b>revert</b></font>
+
+|||
+|||
+|||
+
+Owner -> MA: **setTarget**(OtherGolemNetworkToken)
+
+
+Alice -> GNT: **migrate**(100)
+activate GNT
+
+GNT -> MA: **migrateFrom**(Alice, 100)
+
+activate MA
+
+MA -> NGNT2: **mint**(Alice, 100)
+
+return
+
+GNT -> GNT: **Event**: Migrate(Alice, GNTMigrationAgent, 100)
+return
+
+
+
+end
+
+@enduml

@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+      "allowJs": true,
+      "noImplicitAny": false,
+      "target": "es2015"
+    },
+    "exclude": [
+      "**/build",
+      "**/dist"
+    ]
+  }
